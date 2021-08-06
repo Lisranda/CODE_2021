@@ -7,7 +7,13 @@ public class Player : MonoBehaviour {
     public PlayerInput PlayerInput { get; private set; }
     public StateMachine StateMachine { get; private set; }
 
-    public PCGrounded StateGrounded { get; private set; }
+    public PCWalking StateWalking { get; private set; }
+    public PCRunning StateRunning { get; private set; }
+    public PCSprinting StateSprinting { get; private set; }
+
+    public bool rememberWalking { get; private set; }
+
+    public void ToggleWalking () { rememberWalking = !rememberWalking; }
 
     void Awake () {
         PlayerInput = new PlayerInput ();
@@ -18,7 +24,7 @@ public class Player : MonoBehaviour {
     }
 
     void Start () {
-        StateMachine.Initialize (StateGrounded);
+        StateMachine.Initialize (StateRunning);
     }
 
     void Update () {
@@ -26,6 +32,9 @@ public class Player : MonoBehaviour {
     }
 
     void InitializeStates () {
-        StateGrounded = new PCGrounded (StateMachine , this);
+        StateWalking = new PCWalking (StateMachine , this);
+        StateRunning = new PCRunning (StateMachine , this);
+        StateSprinting = new PCSprinting (StateMachine , this);
     }
+
 }

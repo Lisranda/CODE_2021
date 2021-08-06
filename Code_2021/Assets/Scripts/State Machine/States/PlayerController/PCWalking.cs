@@ -1,14 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PCAnyState : State {
-    protected Player player;
-    protected Camera cam;
-    protected Transform transform;
-    protected PlayerInput playerInput;
-
-    public PCAnyState (StateMachine stateMachine, Player player) : base (stateMachine) {
+public class PCWalking : PCGrounded {
+    public PCWalking (StateMachine stateMachine , Player player) : base (stateMachine , player) {
         this.stateMachine = stateMachine;
         this.player = player;
         this.cam = Camera.main;
@@ -30,5 +26,10 @@ public class PCAnyState : State {
 
     public override void FixedTick () {
         base.FixedTick ();
+    }
+
+    protected override void OnWalkPressed (InputAction.CallbackContext context) {
+        base.OnWalkPressed (context);
+        stateMachine.ChangeState (player.StateRunning);
     }
 }

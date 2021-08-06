@@ -5,13 +5,8 @@ using UnityEngine.InputSystem;
 using System;
 
 public class PCGrounded : PCAnyState {
-    protected Camera cam;
-    protected Transform transform;
-    protected PlayerInput playerInput;
-
     protected Vector2 movementInput;
     protected Quaternion targetRotation;
-    protected bool isWalking;
 
     public delegate void RotationDelegate (Quaternion rotation);
     public delegate void LocomotionDelegate (LocomotionContext locomotion);
@@ -20,28 +15,30 @@ public class PCGrounded : PCAnyState {
 
     public class LocomotionContext : EventArgs {
         public Vector2 MovementInput { get; protected set; }
-        public bool IsWalking { get; protected set; }
+        public State SendingState { get; protected set; }
 
-        public LocomotionContext (Vector2 movementInput, bool isWalking) {
+        public LocomotionContext (Vector2 movementInput, State sendingState) {
             this.MovementInput = movementInput;
-            this.IsWalking = isWalking;
+            this.SendingState = sendingState;
         }
     }
 
-    public PCGrounded (StateMachine stateMachine , Player player) : base (stateMachine) {
+    public PCGrounded (StateMachine stateMachine , Player player) : base (stateMachine , player) {
+        this.stateMachine = stateMachine;
+        this.player = player;
         this.cam = Camera.main;
         this.transform = player.transform;
         this.playerInput = player.PlayerInput;
-
-        InitializeCallbacks ();
     }
 
     public override void OnEnter () {
         base.OnEnter ();
+        InitializeCallbacks ();
     }
 
     public override void OnExit () {
         base.OnExit ();
+        DeregisterCallbacks ();
     }
 
     public override void Tick () {
@@ -55,7 +52,21 @@ public class PCGrounded : PCAnyState {
     }
 
     protected virtual void InitializeCallbacks () {
-        playerInput.CharacterInput.Walk.started += context => { isWalking = !isWalking; };
+        playerInput.CharacterInput.Walk.started += OnWalkPressed;
+        playerInput.CharacterInput.Sprint.started += OnSprintPressed;
+    }
+
+    protected virtual void DeregisterCallbacks () {
+        playerInput.CharacterInput.Walk.started -= OnWalkPressed;
+        playerInput.CharacterInput.Sprint.started -= OnSprintPressed;
+    }
+
+    protected virtual void OnWalkPressed (InputAction.CallbackContext context) {
+        player.ToggleWalking ();
+    }
+
+    protected virtual void OnSprintPressed (InputAction.CallbackContext context) {
+        stateMachine.ChangeState (player.StateSprinting);
     }
 
     protected virtual void FaceMouseInput () {
@@ -72,7 +83,7 @@ public class PCGrounded : PCAnyState {
 
     protected virtual void Locomotion () {
         Vector2 movementInput = playerInput.CharacterInput.Locomotion.ReadValue<Vector2> ();
-        LocomotionContext locomotionContext = new LocomotionContext (movementInput , isWalking);
+        LocomotionContext locomotionContext = new LocomotionContext (movementInput , this);
         LocomotionCallback?.Invoke (locomotionContext);
     }
 }
