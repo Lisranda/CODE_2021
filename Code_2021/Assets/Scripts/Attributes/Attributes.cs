@@ -3,5 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Attributes {
-    public Attributes () { }
+    public Attribute Speed { get; }
+    public Attribute WalkSpeed { get; }
+    public Attribute SprintSpeed { get; }
+    public Attribute RotationSpeed { get; }
+
+    public Attributes () {
+        Speed = new Attribute (5f);
+        WalkSpeed = new Attribute (3f);
+        SprintSpeed = new Attribute (10f);
+        RotationSpeed = new Attribute (7f);
+    }
 }

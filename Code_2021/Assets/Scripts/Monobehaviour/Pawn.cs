@@ -8,6 +8,7 @@ public abstract class Pawn : MonoBehaviour {
     public StateMachine StateMachine { get; protected set; }
     public Motor Motor { get; protected set; }
     public CharacterController CharacterController { get; protected set; }
+    public Attributes Attributes { get; protected set; }
 
     protected State defaultState;
 
@@ -15,6 +16,7 @@ public abstract class Pawn : MonoBehaviour {
         StateMachine = new StateMachine ();
         CharacterController = GetComponent<CharacterController> ();
         Motor = GetComponent<Motor> ();
+        Attributes = new Attributes ();
         InitializeStates ();
     }
 

@@ -27,4 +27,9 @@ public class PCWalking : PCGrounded {
         base.OnWalkPressed (context);
         stateMachine.ChangeState (player.StateRunning);
     }
+
+    protected override void Locomotion () {
+        speed = player.Attributes.WalkSpeed.Value;
+        base.Locomotion ();
+    }
 }

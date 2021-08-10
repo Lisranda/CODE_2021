@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum AttributeModifierType {
-    Flat = 100,
-    Percent = 200
+    Flat,
+    Percent
 }
 
 public class AttributeModifier {
-    public AttributeModifier () { }
+    public readonly AttributeModifierType ModifierType;
+    public readonly float Value;
+    public readonly object Source;
+
+    public AttributeModifier (AttributeModifierType modifierType , float value , object source) {
+        ModifierType = modifierType;
+        Value = value;
+        Source = source;
+    }
+
+    public AttributeModifier (AttributeModifierType modifierType , float value) : this (modifierType , value , null) { }
 }

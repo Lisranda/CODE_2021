@@ -28,6 +28,11 @@ public class PCSprinting : PCGrounded {
         return;
     }
 
+    protected override void Locomotion () {
+        speed = player.Attributes.SprintSpeed.Value;
+        base.Locomotion ();
+    }
+
     protected virtual void PollSprinting () {
         if (player.PlayerInput.CharacterInput.Sprint.ReadValue<float> () == 0) stateMachine.ChangeState (player.StateRunning);
     }

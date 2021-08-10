@@ -7,6 +7,7 @@ using System;
 public class PCGrounded : PCAnyState {
     protected Vector2 movementInput;
     protected Quaternion targetRotation;
+    protected float speed;
 
     public PCGrounded (StateMachine stateMachine , Player player) : base (stateMachine , player) {
     }
@@ -63,6 +64,6 @@ public class PCGrounded : PCAnyState {
 
     protected virtual void Locomotion () {
         Vector2 movementInput = player.PlayerInput.CharacterInput.Locomotion.ReadValue<Vector2> ();
-        player.Motor.HandleLocomotion (movementInput , this);
+        player.Motor.HandleLocomotion (movementInput , speed);
     }
 }

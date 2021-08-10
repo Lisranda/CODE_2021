@@ -5,15 +5,15 @@ using UnityEngine.InputSystem;
 
 public class Player : Pawn {
     public Camera Cam { get; protected set; }
-    public PlayerInput PlayerInput { get; private set; }
+    public PlayerInput PlayerInput { get; protected set; }
 
-    public PCWalking StateWalking { get; private set; }
-    public PCRunning StateRunning { get; private set; }
-    public PCSprinting StateSprinting { get; private set; }
+    public PCWalking StateWalking { get; protected set; }
+    public PCRunning StateRunning { get; protected set; }
+    public PCSprinting StateSprinting { get; protected set; }
 
-    public bool RememberWalking { get; private set; }
+    public bool RememberWalking { get; protected set; }
 
-    public void ToggleWalking () { RememberWalking = !RememberWalking; }
+    public virtual void ToggleWalking () { RememberWalking = !RememberWalking; }
 
     protected override void Awake () {
         base.Awake ();
