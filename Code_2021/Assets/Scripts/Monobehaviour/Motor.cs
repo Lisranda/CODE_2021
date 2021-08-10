@@ -4,56 +4,35 @@ using UnityEngine;
 using System;
 
 [RequireComponent (typeof (Player))]
-[RequireComponent (typeof (CharacterController))]
 public class Motor : MonoBehaviour {
     Player player;
-    CharacterController characterController;
 
     readonly float rotationSpeed = 7f;
     readonly float walkSpeed = 3f;
     readonly float runSpeed = 7f;
     readonly float sprintSpeed = 10f;
 
-    void Awake () {
+    private void Awake () {
         player = GetComponent<Player> ();
-        characterController = GetComponent<CharacterController> ();
     }
 
-    void Start () {
-        InitializeCallbacks ();
-    }
-
-    void Update () {
-    }
-
-    void InitializeCallbacks () {
-        player.StateWalking.RotationCallback += HandleRotation;
-        player.StateWalking.LocomotionCallback += HandleLocomotion;
-
-        player.StateRunning.RotationCallback += HandleRotation;
-        player.StateRunning.LocomotionCallback += HandleLocomotion;
-
-        player.StateSprinting.RotationCallback += HandleRotation;
-        player.StateSprinting.LocomotionCallback += HandleLocomotion;
-    }
-
-    float GetGravity () {
-        if (characterController.isGrounded) return -0.05f;
+    private float GetGravity () {
+        if (player.CharacterController.isGrounded) return -0.05f;
         else return -9.8f;
     }
 
-    void HandleRotation (Quaternion targetRotation) {
+    public void HandleRotation (Quaternion targetRotation) {
         transform.rotation = Quaternion.Slerp (transform.rotation , targetRotation , rotationSpeed * Time.deltaTime);
     }
 
-    void HandleLocomotion (PCGrounded.LocomotionContext context) {
+    public void HandleLocomotion (Vector2 movementInput, State sendingState) {
         float speed;
-        if (context.SendingState.GetType () == typeof (PCWalking)) speed = walkSpeed;
-        else if (context.SendingState.GetType () == typeof (PCRunning)) speed = runSpeed;
-        else if (context.SendingState.GetType () == typeof (PCSprinting)) speed = sprintSpeed;
-        else { Debug.Log (""); return; }
+        if (sendingState.GetType () == typeof (PCWalking)) speed = walkSpeed;
+        else if (sendingState.GetType () == typeof (PCRunning)) speed = runSpeed;
+        else if (sendingState.GetType () == typeof (PCSprinting)) speed = sprintSpeed;
+        else { Debug.Log ("This state doesn't have a speed set"); return; }
 
-        Vector3 movementDirection = new Vector3 (context.MovementInput.x , GetGravity () , context.MovementInput.y);
-        characterController.Move (transform.TransformDirection (movementDirection) * speed * Time.deltaTime);
+        Vector3 movementDirection = new Vector3 (movementInput.x , GetGravity () , movementInput.y);
+        player.CharacterController.Move (transform.TransformDirection (movementDirection) * speed * Time.deltaTime);
     }
 }

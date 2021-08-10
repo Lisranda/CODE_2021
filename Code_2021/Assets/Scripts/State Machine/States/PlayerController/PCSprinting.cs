@@ -5,11 +5,6 @@ using UnityEngine.InputSystem;
 
 public class PCSprinting : PCGrounded {
     public PCSprinting (StateMachine stateMachine , Player player) : base (stateMachine , player) {
-        this.stateMachine = stateMachine;
-        this.player = player;
-        this.cam = Camera.main;
-        this.transform = player.transform;
-        this.playerInput = player.PlayerInput;
     }
 
     public override void OnEnter () {
@@ -34,6 +29,6 @@ public class PCSprinting : PCGrounded {
     }
 
     protected virtual void PollSprinting () {
-        if (playerInput.CharacterInput.Sprint.ReadValue<float> () == 0) stateMachine.ChangeState (player.StateRunning);
+        if (player.PlayerInput.CharacterInput.Sprint.ReadValue<float> () == 0) stateMachine.ChangeState (player.StateRunning);
     }
 }

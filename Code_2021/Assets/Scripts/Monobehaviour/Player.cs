@@ -3,38 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour {
+public class Player : Pawn {
+    public Camera Cam { get; protected set; }
     public PlayerInput PlayerInput { get; private set; }
-    public StateMachine StateMachine { get; private set; }
 
     public PCWalking StateWalking { get; private set; }
     public PCRunning StateRunning { get; private set; }
     public PCSprinting StateSprinting { get; private set; }
 
-    public bool rememberWalking { get; private set; }
+    public bool RememberWalking { get; private set; }
 
-    public void ToggleWalking () { rememberWalking = !rememberWalking; }
+    public void ToggleWalking () { RememberWalking = !RememberWalking; }
 
-    void Awake () {
+    protected override void Awake () {
+        base.Awake ();
+        Cam = Camera.main;
         PlayerInput = new PlayerInput ();
         PlayerInput.CharacterInput.Enable ();
-
-        StateMachine = new StateMachine ();
-        InitializeStates ();
     }
 
-    void Start () {
-        StateMachine.Initialize (StateRunning);
+    protected override void Start () {
+        base.Start ();
     }
 
-    void Update () {
-        StateMachine.Tick ();
+    protected override void Update () {
+        base.Update ();
     }
 
-    void InitializeStates () {
+    protected override void InitializeStates () {
+        base.InitializeStates ();
         StateWalking = new PCWalking (StateMachine , this);
         StateRunning = new PCRunning (StateMachine , this);
         StateSprinting = new PCSprinting (StateMachine , this);
+        defaultState = StateRunning;
     }
 
 }

@@ -5,9 +5,7 @@ using UnityEngine;
 public class StateMachine {
     protected State currentState;
 
-    public StateMachine () {
-
-    }
+    public StateMachine () { }
 
     public void Initialize (State initialState) {
         currentState = initialState;
@@ -15,6 +13,7 @@ public class StateMachine {
     }
 
     public void ChangeState (State newState) {
+        if (currentState == newState) return;
         if (currentState != null) currentState.OnExit ();
 
         currentState = newState;

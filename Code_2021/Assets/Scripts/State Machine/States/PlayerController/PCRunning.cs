@@ -6,16 +6,11 @@ using UnityEngine.InputSystem;
 public class PCRunning : PCGrounded {
 
     public PCRunning (StateMachine stateMachine , Player player) : base (stateMachine , player) {
-        this.stateMachine = stateMachine;
-        this.player = player;
-        this.cam = Camera.main;
-        this.transform = player.transform;
-        this.playerInput = player.PlayerInput;
     }
 
     public override void OnEnter () {
         base.OnEnter ();
-        if (player.rememberWalking) stateMachine.ChangeState (player.StateWalking);
+        if (player.RememberWalking) stateMachine.ChangeState (player.StateWalking);
     }
 
     public override void OnExit () {

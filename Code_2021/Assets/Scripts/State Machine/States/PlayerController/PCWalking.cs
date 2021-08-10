@@ -5,11 +5,6 @@ using UnityEngine.InputSystem;
 
 public class PCWalking : PCGrounded {
     public PCWalking (StateMachine stateMachine , Player player) : base (stateMachine , player) {
-        this.stateMachine = stateMachine;
-        this.player = player;
-        this.cam = Camera.main;
-        this.transform = player.transform;
-        this.playerInput = player.PlayerInput;
     }
 
     public override void OnEnter () {
