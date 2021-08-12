@@ -24,8 +24,9 @@ public class PCGrounded : PCAnyState {
 
     public override void Tick () {
         base.Tick ();
+        OnSlip ();
         FaceMouseInput ();
-        Locomotion (); 
+        Locomotion ();
     }
 
     public override void FixedTick () {
@@ -48,6 +49,10 @@ public class PCGrounded : PCAnyState {
 
     protected virtual void OnSprintPressed (InputAction.CallbackContext context) {
         stateMachine.ChangeState (player.StateSprinting);
+    }
+
+    protected virtual void OnSlip () {
+        if (!player.CharacterController.SureFooted ()) stateMachine.ChangeState (player.StateSlipping);
     }
 
     protected virtual void FaceMouseInput () {

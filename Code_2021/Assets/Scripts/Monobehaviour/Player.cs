@@ -10,8 +10,11 @@ public class Player : Pawn {
     public PCWalking StateWalking { get; protected set; }
     public PCRunning StateRunning { get; protected set; }
     public PCSprinting StateSprinting { get; protected set; }
+    public PCSlipping StateSlipping { get; protected set; }
 
     public bool RememberWalking { get; protected set; }
+
+    protected RaycastHit groundHit;
 
     public virtual void ToggleWalking () { RememberWalking = !RememberWalking; }
 
@@ -28,6 +31,7 @@ public class Player : Pawn {
 
     protected override void Update () {
         base.Update ();
+        Debug.Log (CharacterController.isGrounded);
     }
 
     protected override void InitializeStates () {
@@ -35,7 +39,7 @@ public class Player : Pawn {
         StateWalking = new PCWalking (StateMachine , this);
         StateRunning = new PCRunning (StateMachine , this);
         StateSprinting = new PCSprinting (StateMachine , this);
+        StateSlipping = new PCSlipping (StateMachine , this);
         defaultState = StateRunning;
     }
-
 }
