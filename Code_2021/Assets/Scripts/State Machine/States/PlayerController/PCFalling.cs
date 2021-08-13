@@ -8,10 +8,12 @@ public class PCFalling : PCAnyState {
 
     public override void OnEnter () {
         base.OnEnter ();
+        player.Motor.ResetYVelocity = false;
     }
 
     public override void OnExit () {
         base.OnExit ();
+        player.Motor.ResetYVelocity = true;
     }
 
     public override void Tick () {

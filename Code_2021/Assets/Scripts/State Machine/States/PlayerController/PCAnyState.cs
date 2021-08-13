@@ -74,6 +74,7 @@ public class PCAnyState : State {
 
     protected virtual void Locomotion () {
         Vector2 movementInput = player.PlayerInput.CharacterInput.Locomotion.ReadValue<Vector2> ();
-        player.Motor.HandleLocomotion (movementInput , speed);
+        Vector3 movementVelocity = new Vector3 (movementInput.x , 0f , movementInput.y) * speed;
+        player.Motor.AddVelocity (movementVelocity , MoveType.Internal);
     }    
 }

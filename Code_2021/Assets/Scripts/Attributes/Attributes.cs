@@ -14,6 +14,6 @@ public class Attributes {
         WalkSpeed = new Attribute (3f);
         SprintSpeed = new Attribute (10f);
         RotationSpeed = new Attribute (7f);
-        FallControlSpeed = new Attribute (3f);
+        FallControlSpeed = new Attribute (1f);
     }
 }
