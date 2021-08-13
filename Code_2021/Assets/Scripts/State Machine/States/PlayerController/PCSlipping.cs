@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PCSlipping : PCAnyState {
     public PCSlipping (StateMachine stateMachine , Player player) : base (stateMachine , player) {
@@ -21,6 +22,8 @@ public class PCSlipping : PCAnyState {
     public override void FixedTick () {
         base.FixedTick ();
     }
+
+    protected override void OnJumpPressed (InputAction.CallbackContext context) { }
 
     protected override void PollSprinting () { }
 

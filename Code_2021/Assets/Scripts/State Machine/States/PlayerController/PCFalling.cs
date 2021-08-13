@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PCFalling : PCAnyState {
     public PCFalling (StateMachine stateMachine , Player player) : base (stateMachine , player) {
@@ -8,12 +9,15 @@ public class PCFalling : PCAnyState {
 
     public override void OnEnter () {
         base.OnEnter ();
-        player.Motor.ResetYVelocity = false;
+        player.Motor.ResetMovementVelocity (false);
+        player.Motor.ResetYVelocity (false);
+        player.Motor.AddLastFrameMovementVelocity ();
     }
 
     public override void OnExit () {
         base.OnExit ();
-        player.Motor.ResetYVelocity = true;
+        player.Motor.ResetMovementVelocity (true);
+        player.Motor.ResetYVelocity (true);
     }
 
     public override void Tick () {
@@ -24,6 +28,8 @@ public class PCFalling : PCAnyState {
         base.FixedTick ();
     }
 
+    protected override void OnJumpPressed (InputAction.CallbackContext context) { }
+
     protected override void PollSprinting () { }
 
     protected override void PollSlipping () { }
@@ -33,7 +39,7 @@ public class PCFalling : PCAnyState {
     }
 
     protected override void Locomotion () {
-        speed = player.Attributes.FallControlSpeed.Value;
+        speed = player.Attributes.FallControlSpeed.Value * Time.deltaTime;
         base.Locomotion ();
     }
 }

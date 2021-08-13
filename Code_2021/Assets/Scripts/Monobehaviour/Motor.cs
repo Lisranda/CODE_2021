@@ -12,12 +12,14 @@ public enum MoveType {
 public class Motor : MonoBehaviour {
     Player player;
     Vector3 frameVelocity;
+    Vector3 lastFrameVelocity;
     const float groundedGravity = -50f;
     const float accelGravity = -9.8f;
-    float ySpeed;
 
-    public bool ResetMovementVelocity = true;
-    public bool ResetYVelocity = true;
+    private bool resetMovementVolocity = true;
+    private bool resetYVelocity = true;
+
+    public float FrameVelocityY { get { return frameVelocity.y; } }
 
     private void Awake () {
         player = GetComponent<Player> ();
@@ -28,11 +30,21 @@ public class Motor : MonoBehaviour {
     }
 
     private void ProcessGravity () {
-        if (player.CharacterController.isGrounded) {
+        if (player.CharacterController.isGrounded && resetYVelocity) {
             frameVelocity.y = groundedGravity;
         }  else {
             frameVelocity.y += (accelGravity * Time.deltaTime);
         }
+    }
+
+    public void ResetMovementVelocity (bool setValue) {
+        resetMovementVolocity = setValue;
+        if (setValue) { frameVelocity.x = 0f; frameVelocity.z = 0f; }
+    }
+
+    public void ResetYVelocity (bool setValue) {
+        resetYVelocity = setValue;
+        if (setValue) frameVelocity.y = 0f;
     }
 
     public void SetVelocity (Vector3 movementVelocity , MoveType source) {
@@ -40,16 +52,36 @@ public class Motor : MonoBehaviour {
         else if (source == MoveType.Internal) frameVelocity = player.transform.TransformDirection (movementVelocity);
     }
 
+    public void SetVelocityY (float yVelocity) {
+        frameVelocity.y = yVelocity;
+    }
+
+    public void SetVelocityXZ (float xVelocity, float zVelocity) {
+        frameVelocity.x = xVelocity;
+        frameVelocity.z = zVelocity;
+    }
+
     public void AddVelocity (Vector3 movementVelocity , MoveType source) {
         if (source == MoveType.External) frameVelocity += movementVelocity;
         else if (source == MoveType.Internal) frameVelocity += player.transform.TransformDirection (movementVelocity);
     }
 
+    public void AddLastFrameMovementVelocity () {
+        frameVelocity.x += lastFrameVelocity.x;
+        frameVelocity.z += lastFrameVelocity.z;
+    }
+
+    public void AddLastFrameYVelocity () {
+        frameVelocity.y += lastFrameVelocity.y;
+    }
+
     private void HandleLocomotion () {
         ProcessGravity ();
         player.CharacterController.Move (frameVelocity * Time.deltaTime);
-        if (ResetMovementVelocity) { frameVelocity.x = 0f; frameVelocity.z = 0f; }
-        if (ResetYVelocity) frameVelocity.y = 0f;
+
+        lastFrameVelocity = frameVelocity;
+        if (resetMovementVolocity) { frameVelocity.x = 0f; frameVelocity.z = 0f; }
+        if (resetYVelocity) { frameVelocity.y = 0f; }
     }
 
     public void HandleRotation (Quaternion targetRotation) {

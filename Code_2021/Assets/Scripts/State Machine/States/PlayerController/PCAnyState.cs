@@ -38,14 +38,20 @@ public class PCAnyState : State {
 
     protected virtual void InitializeCallbacks () {
         player.PlayerInput.CharacterInput.Walk.started += OnWalkPressed;
+        player.PlayerInput.CharacterInput.Jump.started += OnJumpPressed;
     }
 
     protected virtual void DeregisterCallbacks () {
         player.PlayerInput.CharacterInput.Walk.started -= OnWalkPressed;
+        player.PlayerInput.CharacterInput.Jump.started -= OnJumpPressed;
     }
 
     protected virtual void OnWalkPressed (InputAction.CallbackContext context) {
         player.ToggleWalking ();
+    }
+
+    protected virtual void OnJumpPressed (InputAction.CallbackContext context) {
+        stateMachine.ChangeState (player.StateJumping);
     }
 
     protected virtual void PollSprinting () {

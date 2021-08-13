@@ -8,12 +8,14 @@ public class Attributes {
     public Attribute SprintSpeed { get; }
     public Attribute RotationSpeed { get; }
     public Attribute FallControlSpeed { get; }
+    public Attribute JumpSpeed { get; }
 
     public Attributes () {
         Speed = new Attribute (5f);
         WalkSpeed = new Attribute (3f);
         SprintSpeed = new Attribute (10f);
         RotationSpeed = new Attribute (7f);
-        FallControlSpeed = new Attribute (1f);
+        FallControlSpeed = new Attribute (3f);
+        JumpSpeed = new Attribute (7f);
     }
 }
