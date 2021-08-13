@@ -6,17 +6,18 @@ using System;
 [RequireComponent (typeof (Player))]
 public class Motor : MonoBehaviour {
     Player player;
-    float ySpeed = -4.5f;
+    float ySpeed;
 
     private void Awake () {
         player = GetComponent<Player> ();
     }
 
     private float GetGravity () {
-        if (player.CharacterController.isGrounded && player.CharacterController.SureFooted ()) {
+        if (player.CharacterController.isGrounded && player.CharacterController.SlopeAngle () != float.MaxValue) {
             ySpeed = 0f;
-            return -4.5f;
+            return -50f;
         }
+
         ySpeed += -9.8f * Time.deltaTime;
         return ySpeed;
     }
@@ -30,8 +31,10 @@ public class Motor : MonoBehaviour {
         player.CharacterController.Move (transform.TransformDirection (movementDirection) * Time.deltaTime);
     }
 
-    public void HandleSlidingMovement (Vector3 movementInput, float speed) {
-        Vector3 movementDirection = new Vector3 (movementInput.x * speed , GetGravity () , movementInput.z * speed);
-        player.CharacterController.Move (movementDirection * Time.deltaTime);
+    public void HandleSlippingInput (Vector2 movementInput, float movementSpeed, Vector3 slidingDirection, float slidingSpeed) {
+        Vector3 movementVelocity = new Vector3 (movementInput.x * movementSpeed , GetGravity () , movementInput.y * movementSpeed);
+        movementVelocity = transform.TransformDirection (movementVelocity);
+        movementVelocity += (slidingDirection * slidingSpeed);
+        player.CharacterController.Move (movementVelocity * Time.deltaTime);
     }
 }

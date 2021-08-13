@@ -16,20 +16,22 @@ public class PCSlipping : PCAnyState {
 
     public override void Tick () {
         base.Tick ();
-        OnSureFooted ();
-        SlippingMovement ();
     }
 
     public override void FixedTick () {
         base.FixedTick ();
     }
 
-    protected virtual void OnSureFooted () {
+    protected override void PollSprinting () { }
+
+    protected override void PollSlipping () {
         if (player.CharacterController.SureFooted ()) stateMachine.ChangeState (player.StateRunning);
     }
 
-    public virtual void SlippingMovement () {
-        player.Motor.HandleSlidingMovement (player.CharacterController.SlopeDirection () , -3f - Time.deltaTime);
+    protected override void Locomotion () {
+        speed = player.Attributes.Speed.Value;
+        Vector2 movementInput = player.PlayerInput.CharacterInput.Locomotion.ReadValue<Vector2> ();
+        player.Motor.HandleSlippingInput (movementInput , speed , player.CharacterController.SlopeDirection () , -3f - Time.deltaTime);
     }
 
     

@@ -7,12 +7,10 @@ public static class CharacterControllerExtension {
     private static RaycastHit hit;
 
     public static bool SureFooted (this CharacterController CharacterController) {
-        if (!CharacterController.isGrounded) {
-            return false;
-        }
-        if (SlopeAngle (CharacterController) > CharacterController.slopeLimit) {
-            return false;
-        } 
+        float slopeAngle = SlopeAngle (CharacterController);
+        if (!CharacterController.isGrounded) return false;        
+        if (slopeAngle == float.MaxValue) return true;
+        if (slopeAngle > CharacterController.slopeLimit) return false;
         return true;
     }
 

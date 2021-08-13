@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PCSprinting : PCGrounded {
+public class PCSprinting : PCAnyState {
     public PCSprinting (StateMachine stateMachine , Player player) : base (stateMachine , player) {
     }
 
@@ -24,16 +24,12 @@ public class PCSprinting : PCGrounded {
         base.FixedTick ();
     }
 
-    protected override void OnSprintPressed (InputAction.CallbackContext context) {
-        return;
-    }
-
     protected override void Locomotion () {
         speed = player.Attributes.SprintSpeed.Value;
         base.Locomotion ();
     }
 
-    protected virtual void PollSprinting () {
+    protected override void PollSprinting () {
         if (player.PlayerInput.CharacterInput.Sprint.ReadValue<float> () == 0) stateMachine.ChangeState (player.StateRunning);
     }
 }

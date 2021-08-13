@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PCRunning : PCGrounded {
+public class PCRunning : PCAnyState {
 
     public PCRunning (StateMachine stateMachine , Player player) : base (stateMachine , player) {
     }
