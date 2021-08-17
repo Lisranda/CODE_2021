@@ -39,12 +39,14 @@ public class Motor : MonoBehaviour {
 
     public void ResetMovementVelocity (bool setValue) {
         resetMovementVolocity = setValue;
-        if (setValue) { frameVelocity.x = 0f; frameVelocity.z = 0f; }
+        //if (setValue) { frameVelocity.x = 0f; frameVelocity.z = 0f; }
+        frameVelocity.x = 0f; frameVelocity.z = 0f;
     }
 
     public void ResetYVelocity (bool setValue) {
         resetYVelocity = setValue;
-        if (setValue) frameVelocity.y = 0f;
+        //if (setValue) frameVelocity.y = 0f;
+        frameVelocity.y = 0f;
     }
 
     public void SetVelocity (Vector3 movementVelocity , MoveType source) {

@@ -16,7 +16,8 @@ public static class CharacterControllerExtension {
 
     public static float SlopeAngle (this CharacterController CharacterController) {
         if (Physics.Raycast (CharacterController.transform.position , Vector3.down , out hit , (CharacterController.height / 2) + 1f)) {
-            return Vector3.Angle (hit.normal , Vector3.up);
+            float angle = Vector3.Angle (hit.normal , Vector3.up);
+            if (angle < 85f) return angle;
         }
         return float.MaxValue;
     }

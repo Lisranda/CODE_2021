@@ -33,8 +33,10 @@ public class PCSlipping : PCAnyState {
 
     protected override void Locomotion () {
         speed = player.Attributes.Speed.Value;
-        Vector3 slipVelocity = player.CharacterController.SlopeDirection () * (-3f - Time.deltaTime);
-        player.Motor.AddVelocity (slipVelocity , MoveType.External);
+        if (player.CharacterController.SlopeAngle () != float.MaxValue) {
+            Vector3 slipVelocity = player.CharacterController.SlopeDirection () * (-3f - Time.deltaTime);
+            player.Motor.AddVelocity (slipVelocity , MoveType.External);
+        }
         base.Locomotion ();
     }
 

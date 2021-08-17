@@ -8,9 +8,13 @@ public class PCAnyState : State {
     protected Vector2 movementInput;
     protected Quaternion targetRotation;
     protected float speed;
+    protected readonly float hangTime;
+    protected float slipTime;
+    protected float fallTime;
 
     public PCAnyState (StateMachine stateMachine , Player player) : base (stateMachine) {
         this.player = player;
+        this.hangTime = 0.2f;
     }
 
     public override void OnEnter () {
@@ -59,11 +63,17 @@ public class PCAnyState : State {
     }
 
     protected virtual void PollSlipping () {
-        if (!player.CharacterController.SureFooted ()) stateMachine.ChangeState (player.StateSlipping);
+        if (player.CharacterController.isGrounded && !player.CharacterController.SureFooted ()) {
+            if (slipTime >= hangTime) stateMachine.ChangeState (player.StateSlipping);
+            else slipTime += Time.deltaTime;
+        } else slipTime = 0f;
     }
 
     protected virtual void PollGrounded () {
-        if (!player.CharacterController.isGrounded) stateMachine.ChangeState (player.StateFalling);
+        if (!player.CharacterController.isGrounded) {
+            if (fallTime >= hangTime) stateMachine.ChangeState (player.StateFalling);
+            else fallTime += Time.deltaTime;
+        } else fallTime = 0f;
     }
 
     protected virtual void FaceMouseInput () {
