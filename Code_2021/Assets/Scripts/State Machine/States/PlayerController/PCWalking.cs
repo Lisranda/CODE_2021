@@ -22,14 +22,4 @@ public class PCWalking : PCAnyState {
     public override void FixedTick () {
         base.FixedTick ();
     }
-
-    protected override void OnWalkPressed (InputAction.CallbackContext context) {
-        base.OnWalkPressed (context);
-        stateMachine.ChangeState (player.StateRunning);
-    }
-
-    protected override void Locomotion () {
-        speed = player.Attributes.WalkSpeed.Value;
-        base.Locomotion ();
-    }
 }

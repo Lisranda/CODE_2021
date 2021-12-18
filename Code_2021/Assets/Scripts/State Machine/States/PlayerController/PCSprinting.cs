@@ -17,19 +17,9 @@ public class PCSprinting : PCAnyState {
 
     public override void Tick () {
         base.Tick ();
-        PollSprinting ();
     }
 
     public override void FixedTick () {
         base.FixedTick ();
-    }
-
-    protected override void Locomotion () {
-        speed = player.Attributes.SprintSpeed.Value;
-        base.Locomotion ();
-    }
-
-    protected override void PollSprinting () {
-        if (player.PlayerInput.CharacterInput.Sprint.ReadValue<float> () == 0) stateMachine.ChangeState (player.StateRunning);
     }
 }

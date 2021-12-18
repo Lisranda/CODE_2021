@@ -9,8 +9,7 @@ public class PCRunning : PCAnyState {
     }
 
     public override void OnEnter () {
-        base.OnEnter ();
-        if (player.RememberWalking) stateMachine.ChangeState (player.StateWalking);
+        base.OnEnter ();        
     }
 
     public override void OnExit () {
@@ -19,19 +18,10 @@ public class PCRunning : PCAnyState {
 
     public override void Tick () {
         base.Tick ();
+        player.SetCurrentSpeed (player.Attributes.Speed.Value);
     }
 
     public override void FixedTick () {
         base.FixedTick ();
-    }
-
-    protected override void OnWalkPressed (InputAction.CallbackContext context) {
-        base.OnWalkPressed (context);
-        stateMachine.ChangeState (player.StateWalking);
-    }
-
-    protected override void Locomotion () {
-        speed = player.Attributes.Speed.Value;
-        base.Locomotion ();
-    }
+    }    
 }

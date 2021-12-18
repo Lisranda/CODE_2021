@@ -9,15 +9,10 @@ public class PCFalling : PCAnyState {
 
     public override void OnEnter () {
         base.OnEnter ();
-        player.Motor.ResetMovementVelocity (false);
-        player.Motor.ResetYVelocity (false);
-        player.Motor.AddLastFrameMovementVelocity ();
     }
 
     public override void OnExit () {
         base.OnExit ();
-        player.Motor.ResetMovementVelocity (true);
-        player.Motor.ResetYVelocity (true);
     }
 
     public override void Tick () {
@@ -26,20 +21,5 @@ public class PCFalling : PCAnyState {
 
     public override void FixedTick () {
         base.FixedTick ();
-    }
-
-    protected override void OnJumpPressed (InputAction.CallbackContext context) { }
-
-    protected override void PollSprinting () { }
-
-    protected override void PollSlipping () { }
-
-    protected override void PollGrounded () {
-        if (player.CharacterController.isGrounded) stateMachine.ChangeState (player.StateRunning);
-    }
-
-    protected override void Locomotion () {
-        speed = player.Attributes.FallControlSpeed.Value * Time.deltaTime;
-        base.Locomotion ();
     }
 }

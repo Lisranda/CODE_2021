@@ -14,12 +14,6 @@ public class Player : Pawn {
     public PCFalling StateFalling { get; protected set; }
     public PCJumping StateJumping { get; protected set; }
 
-    public bool RememberWalking { get; protected set; }
-
-    protected RaycastHit groundHit;
-
-    public virtual void ToggleWalking () { RememberWalking = !RememberWalking; }
-
     protected override void Awake () {
         base.Awake ();
         Cam = Camera.main;
@@ -33,7 +27,6 @@ public class Player : Pawn {
 
     protected override void Update () {
         base.Update ();
-        //Debug.Log (CharacterController.isGrounded + " | " + CharacterController.SureFooted () + " | " + CharacterController.SlopeAngle ());
     }
 
     protected override void InitializeStates () {
